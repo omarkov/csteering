@@ -1,0 +1,2 @@
+n0 ./modelserver 40000
+n0  -np 2 ./model

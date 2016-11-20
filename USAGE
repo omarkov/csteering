@@ -1,0 +1,221 @@
+=================================
+STORM Readme
+Update 10-May-2005
+=================================
+
+
+INHALT:
+---------------------------------
+0) ÜBER STORM
+
+1) INSTALLATION
+ 1.1 - Anforderungen
+ 1.2 - Installation Simulation
+ 1.3 - Installation Visualisierung
+
+2) QUICK START
+ 2.1 - Simulationsserver starten
+ 2.2 - Visualisierung starten
+
+3) COMMANDS
+
+4) FAQ & TROUBLESHOOTING
+ 4.1 - Bekannte Fehler
+ 4.2 - FAQ
+
+5) CREDITS
+
+6) COPYRIGHT
+
+
+---------------------------------
+
+0 - ÜBER STORM
+---------------------------------
+
+   F - Was ist STORM?
+
+   A - STORM ist eine System welches dem Benutzer eine Computational Steering in
+       nahezu Echtzeit erlaubt. Diese System ist das Ergebnis des
+       Studienprojektes A - Computational Steering am IPVS/SGS der Universität
+       Stuttgart. Es entstand im Zeitraum April 2004 bis April 2005 und wurde
+       durch die Abteilung Simulation großer Systeme (SGS) in Auftrag gegeben
+       und betreut.
+
+
+1 - INSTALLATION
+---------------------------------
+
+1.1 Anforderungen
+---------------------------------
+
+   * csvis
+   
+     OS: IRIX, Linux, Mac OS X
+     Prozessor: Pentium-kompatibel ab 800Mhz, MIPS R4400+, G4 ab 867Mhz
+     Speicher: 256MB Ram
+     Grafiksystem: 3D Beschleunigung empfohlen
+     Eingabegerät: Tastatur, Maus oder Trackingsystem
+
+     OpenSceneGraph 0.9.8-2  http://www.openscenegraph.org/
+     FreeType 2              http://www.freetype.org
+     GLib 1.2.0              http://www.gtk.org
+
+
+   * cssim
+
+     OS: Linux
+     Prozessor: Multiprozessoren Rechner (> 2 CPU's a 1,5GHz)
+     Speicher: > 4GB
+
+     Open Cascade 5.2  http://www.opencascade.org/
+     LAM/MPI 7.1.1     http://www.lam-mpi.org/
+
+
+
+
+2 - QUICK START
+---------------------------------
+
+2.1 - Simulationsserver starten
+---------------------------------
+   
+   * Pfade zu den jeweiligen Bibliotheken setzen
+
+   * LAM Knoten in csteering/bin/bootfile und csteering/bin/appscheme
+     eintragen.
+   
+   * LAM starten
+
+   * Simulation mit mpirun -nsigs appscheme starten
+
+
+2.2 - Visualisierung starten
+---------------------------------
+   
+   * Die Visualisierung wird über ./csvis in ../bin gestartet.
+
+   * Mögliche Übergabe Parameter:
+  
+     -h; --help............................Hilfe
+     -d <pfad>; --data-path <pfad>.........Datenpfad setzen
+     -vp <PORT>; --vis-port <PORT>.........Port der Visualisierungs-Komponente
+     -sp <PORT>; --sim-port <PORT>.........Port der Simulations-Komponente
+     -sp <HOST>; --sim-host <HOST>.........Host der Simulations-Komponente
+     --stereo <MODE>.......................Anzeige Modus
+
+   * Stereomodus auf der Soul kann mit --stereo QUAD_BUFFER
+     angefordert werden. Parameter koennen in Umgebungsvariablen gesetzt
+     werden:
+
+       OSG_SCREEN_DISTANCE   Abstand zum Display (Default: 0.5m)
+       OSG_SCREEN_WIDTH      Breite des sichtbaren Bildbereiches (Default: 0.325m)
+       OSG_SCREEN_HEIGHT     Hoehe des sichtbaren Bildbereiches (Default: 0.26m)
+       OSG_EYE_SEPARATION    Augenabstand (Default: 0.06m)
+
+
+3 - COMMANDS 
+---------------------------------
+
+   * Tastatur (bei Maussteuerung):
+     
+     Leertaste - Wechsel in den Kamera Modus
+     Ctrl      - Bewegung in YZ Richtung
+     ALT       - Bewegung in XZ Richtung
+     Shift     - Bewegung in XY Richtung
+
+   * Maus:
+     
+     Linker Mausbutton  - Bestätigen/Auswählen
+     Rechter Mausbutton - Menü
+
+     Kamera-Mode:
+     Linker Mausbutton    - Drehen
+     Mittlerer Mausbutton - Bewegen (hoch/runter, links/rechts)
+     Rechter Mausbutton   - Zoom 		
+   
+   * Flystick:
+     
+     Center 	- Wechsel in den Kamera Modus
+     Right  	- Menü
+     Head   	- Bestätigen/Auswählen
+     Coolie Hat - Sensitivität	
+
+
+4 - FAQ & TROUBLESHOOTING
+---------------------------------
+
+4.1 - Bekannte Fehler
+---------------------------------
+
+   * Teile des Simulationsmenues funktionieren nicht
+   * Keyboardlayout ist in glgooey fehlerhaft
+   * Speicherfragmentierung unter der auf Mozart
+     eingesetzten Kernelversion (2.4)
+   * Knoten fahren manchmal nicht sauber runter
+     (LAM Fehler)
+   * Kontrollpunkte duerfen nicht weiter als voxelFactor (30%)
+     ueber die Modellgrenzen verschoben werden.
+   * Unter IRIX beendet sich die Visualisierung nicht richtig.
+     Man muss nach Beenden noch STRG-C senden.
+   * Die Darstellung des Simulationsraums ist um die Differenz
+     zwischen Modellmitte und Ursprung verschoben
+
+
+4.2 - FAQ
+---------------------------------   
+   
+   F - Welche Datei Formate werden unterstützt?  
+   A - IGS, STEP.
+
+   F - Wie stellt man auf das Trackingsystem um?
+   A - Den Eintrag inputdevice = dtrack in etc/vis.conf einfuegen
+
+   F - Wie vergroessert man den Simulationsraum und aendert
+       die Voxelparameter?
+   A - In Version 1.0 muss man dazu noch csmodel/ModelServer.cpp
+       von Hand editieren (Nach XXX suchen).
+       In Version 1.1 koennen diese Parameter im Simulations-
+       fenster geaendert werden.
+
+
+5 - CREDITS
+---------------------------------
+
+   Rüdiger Hohloch
+   Benjamin Jung
+   Mikhail Prokharau
+   Oliver Markovic
+   Jens Nausedat
+   Tim Rathgeber
+   Dominik R¨ossler
+   Clemens Spenrath
+   Tobias Walter
+
+   Besonderen Dank :
+   Martin Bernreuther
+
+
+6 - COPYRIGHT
+---------------------------------
+
+Copyright 2005 STORM Projekt. Permission is granted to copy. Redistribution and use in source
+(SGML DocBook) and 'compiled' forms (SGML, HTML, PDF, PostScript, RTF and so forth) with
+or without modification, are permitted provided that the following conditions are met:
+Redistributions of source code (SGML DocBook) must retain the above copyright notice, this list
+of conditions and the following disclaimer as the first lines of this file unmodified.
+Redistributions in compiled form (transformed to other DTDs, converted to PDF, PostScript, RTF
+and other formats) must reproduce the above copyright notice, this list of conditions and the following
+disclaimer in the documentation and/or other materials provided with the distribution.
+Important: THIS DOCUMENTATION IS PROVIDED BY THE STORM PROJECT "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE STORM BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+OUT OF THE USE OF THIS DOCUMENTATION, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+

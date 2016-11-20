@@ -1,0 +1,91 @@
+# Makefile.incl
+#
+# this makefile contains some general stuff required in many makefiles
+#
+# based on Makefile.incl from opencage-project (www.opencage.org)
+
+SRC_DIR = $(DEVEL_HOME)/voxel
+UTIL_DIR = $(SRC_DIR)/utils
+LIB_DIR = $(SRC_DIR)/lib
+
+DEVEL_HOME := $(shell cd $(DEVEL_HOME); pwd)
+
+TEX = latex
+CC = g++
+LD = ld
+AR = ar
+
+INCLUDES = -I$(SRC_DIR) -I$(SRC_DIR)/utils -I$(SRC_DIR)/geom \
+	-I$(SRC_DIR)/cad/objects -I/usr/local/include
+
+CCFLAGS = -Wall -O3 $(INCLUDES)
+LDFLAGS = -lm -L/usr/local/lib -L$(LIB_DIR)
+ARFLAGS = rc
+
+
+# some general rules
+
+%.dvi : %.tex
+	$(TEX) $*
+	bibtex $*
+	while egrep -q '^LaTeX Warning: There were undefined references' \
+		$*.log\
+		 >/dev/null 2>&1 ; do \
+		$(TEX) $* ; \
+	done
+	$(TEX) $*
+
+%.ps : %.dvi
+	dvips $*
+	gzip -f $@
+	$(RM) $<
+
+%.pdf : %.tex
+	pdf$(TEX) $*
+	bibtex $*
+	while egrep -q '^LaTeX Warning: There were undefined references' \
+		$*.log\
+		 >/dev/null 2>&1 ; do \
+		pdf$(TEX) $* ; \
+	done
+	pdf$(TEX) $*
+
+%.eps : %.png
+	convert $< $@
+
+# default targets
+
+all: TARGET=all
+all: subdirs alltargets
+
+clean: TARGET=clean
+clean: subdirs cleantargets
+
+clean-all: TARGET=clean-all
+clean-all: subdirs clean-alltargets clean
+
+subdirs : $(SUBDIRS)
+
+$(SUBDIRS) :
+	$(MAKE) -C $@ $(TARGET)
+
+.PHONY : all alltargets clean cleantargets clean-all clean-alltargets \
+	subdirs $(SUBDIRS)
+
+#Program generation
+$(PROGRAMS): $(PACKAGES) *.cpp *.h
+	$(CC) $(CCFLAGS) $@.cpp $(LDFLAGS) $(LIBS) -o $@
+
+# Library generation
+$(LIB): $(OBJECTS)
+	$(AR) $(ARFLAGS) $(LIB_DIR)/$@ $(OBJECTS)
+
+$(OBJECTS): $(UTIL_DIR)/global.h *.h *.cpp
+	$(CC) $(CCFLAGS) -c $*.cpp -o $@
+
+# Class-Reference generation
+doxy-html:
+	cd $(CLASSREF_DIR) ; make doxy
+    
+kdoc-html:
+	cd $(CLASSREF_DIR) ; make kdoc

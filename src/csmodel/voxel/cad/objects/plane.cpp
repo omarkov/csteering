@@ -1,0 +1,85 @@
+// -*- Mode: C++; indent-tabs-mode: nil -*-
+//
+// Copyright (c) 2004, Mikhail Prokharau, StuPro A - CS 
+//  <csteering-devel@duck.informatik.uni-stuttgart.de>
+//  All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+//  o Redistributions of source code must retain the above copyright notice,
+//    this list of conditions and the following disclaimer.
+//  o Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the distribution.
+//  o Neither the name of the author nor the names of the contributors may be
+//    used to endorse or promote products derived from this software without
+//    specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
+
+/**
+ * file: voxel/cad/objects/plane.cpp
+ *
+ * @author Mikhail Prokharau
+ * @date 2004
+ */
+
+#include <plane.h>
+
+#include <point.h>
+
+#include <iostream>
+
+using namespace std;
+
+// ##### getMaxPoint() ###############################################
+Point Plane::getMaxPoint() {
+    Point maxPoint = operator[](0);
+    
+    for (int i = 1; i < getCornerCount(); i++) {
+        maxPoint = maxPoint.max(operator[](i));
+    }
+  
+    return maxPoint;
+}
+
+// ##### getMinPoint() ###############################################
+Point Plane::getMinPoint() {
+    Point minPoint = operator[](0);
+  
+    for (int i = 1; i < getCornerCount(); i++) {
+        minPoint = minPoint.min(operator[](i));
+    }
+  
+    return minPoint;
+}
+
+// ##### isPlane() ###################################################
+bool Plane::isPlane() {
+    return true;
+}
+
+// ##### print() #####################################################
+void Plane::print() {
+    cout << "[ ";
+  
+    for (int i = 0; i < getCornerCount(); i++) {
+        operator[](i).print();
+        cout << " ";
+    }
+  
+    cout << "]" << endl;
+}
+
+// EOF: voxel/cad/objects/plane.cpp
